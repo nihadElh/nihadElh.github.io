@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Detailed view of the RealTime-Aero-Maintenance predictive maintenance project.">
+    <title>RealTime-Aero-Maintenance | Nihad El Hamry</title>
+    <style>
+        :root {
+            --bg: #111111;
+            --panel: #1a1514;
+            --panel-soft: rgba(243, 238, 233, 0.055);
+            --text: #f3eee9;
+            --muted: #bdb3aa;
+            --accent: #b7433d;
+            --accent-deep: #641b24;
+            --border: rgba(243, 238, 233, 0.14);
+            --max-width: 1120px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+            background:
+                radial-gradient(circle at 10% 0%, rgba(100, 27, 36, 0.24), transparent 30rem),
+                radial-gradient(circle at 95% 30%, rgba(183, 67, 61, 0.12), transparent 28rem),
+                var(--bg);
+            color: var(--text);
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            line-height: 1.65;
+        }
+
+        a { color: inherit; }
+
+        .page-shell {
+            width: min(100% - 2rem, var(--max-width));
+            margin: 0 auto;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.25rem 0;
+        }
+
+        .brand {
+            color: var(--text);
+            font-weight: 800;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        .back-link {
+            color: var(--muted);
+            font-size: 0.92rem;
+            text-decoration: none;
+        }
+
+        .back-link:hover, .action-link:hover { color: var(--text); }
+
+        .hero {
+            padding: clamp(3rem, 8vw, 6.5rem) 0 3rem;
+        }
+
+        .eyebrow {
+            margin: 0 0 0.8rem;
+            color: var(--accent);
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        h1, h2, h3 { line-height: 1.15; }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 5.2vw, 4.5rem);
+            letter-spacing: -0.04em;
+            white-space: nowrap;
+        }
+
+        .lead {
+            max-width: 780px;
+            margin: 1.5rem 0 0;
+            color: var(--muted);
+            font-size: clamp(1.05rem, 2vw, 1.3rem);
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .action-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-height: 2.75rem;
+            padding: 0.65rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--panel-soft);
+            color: var(--text);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .action-link.primary {
+            border-color: transparent;
+            background: linear-gradient(135deg, var(--accent-deep), var(--accent));
+        }
+
+        main { padding-bottom: 4rem; }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .section-block {
+            padding: clamp(1.25rem, 3vw, 2rem);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: linear-gradient(145deg, rgba(26, 21, 20, 0.92), rgba(17, 17, 17, 0.86));
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section-block.is-visible { opacity: 1; transform: translateY(0); }
+
+        .section-block:hover {
+            border-color: rgba(183, 67, 61, 0.55);
+            box-shadow: 0 16px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-block.full-width { grid-column: 1 / -1; }
+
+        h2 {
+            margin: 0 0 1rem;
+            font-size: clamp(1.35rem, 3vw, 1.9rem);
+        }
+
+        h2::after {
+            display: block;
+            width: 3rem;
+            height: 3px;
+            margin-top: 0.65rem;
+            background: var(--accent);
+            content: "";
+        }
+
+        h3 {
+            margin: 1.4rem 0 0.45rem;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        p { margin: 0; color: var(--muted); }
+
+        .flow-list, .strategy-list, .result-list {
+            display: grid;
+            gap: 0.85rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .flow-list li, .strategy-list li {
+            padding: 0.85rem 1rem;
+            border-left: 3px solid var(--accent);
+            background: rgba(243, 238, 233, 0.035);
+        }
+
+        .flow-list strong, .strategy-list strong { color: var(--text); }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .architecture-figure { margin-top: 1.5rem; }
+
+        .architecture-figure img {
+            width: min(100%, 900px);
+            height: auto;
+            margin: 0 auto;
+        }
+
+        #dashboard { scroll-margin-top: 1.5rem; }
+
+        .dashboard-figure img {
+            width: min(100%, 980px);
+            height: auto;
+            margin: 0 auto;
+        }
+
+        figure { margin: 0; }
+
+        figure img {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #0b0b0b;
+            object-fit: contain;
+        }
+
+        figcaption {
+            margin-top: 0.55rem;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .badge-groups {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .badge-group {
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: var(--panel-soft);
+        }
+
+        .badge-group h3 { margin-top: 0; }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .badge {
+            padding: 0.3rem 0.55rem;
+            border: 1px solid rgba(183, 67, 61, 0.4);
+            border-radius: 4px;
+            color: #e8c9c4;
+            font-size: 0.82rem;
+            cursor: default;
+            transition: transform 0.25s ease,
+                        background-color 0.25s ease,
+                        color 0.25s ease,
+                        border-color 0.25s ease,
+                        box-shadow 0.25s ease;
+        }
+
+        .badge:hover {
+            background-color: #e8c9c4;
+            color: var(--accent-deep);
+            border-color: #f0aaa2;
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 4px 10px rgba(183, 67, 61, 0.24);
+        }
+
+        .metric {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .metric-value {
+            color: #f0aaa2;
+            font-size: clamp(2.3rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .metric-label { color: var(--muted); font-weight: 700; }
+
+        .result-list { padding-left: 1.2rem; list-style: disc; color: var(--muted); }
+        .result-list li::marker { color: var(--accent); }
+
+        footer {
+            padding: 1.5rem 0 2.5rem;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.86rem;
+        }
+
+        @media (max-width: 780px) {
+            .content-grid, .media-grid { grid-template-columns: 1fr; }
+            .badge-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            h1 { white-space: normal; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .section-block { opacity: 1; transform: none; transition: none; }
+        }
+
+        @media (max-width: 480px) {
+            .page-shell { width: min(100% - 1.25rem, var(--max-width)); }
+            .topbar { align-items: flex-start; flex-direction: column; }
+            .badge-groups { grid-template-columns: 1fr; }
+            .hero { padding-top: 2.5rem; }
+        }
+
+        html[data-theme="light"] {
+            color-scheme: light;
+            --bg: #F8F5F2;
+            --panel: #F0E9E4;
+            --soft: rgba(255, 252, 250, 0.76);
+            --text: #2B2422;
+            --muted: #716660;
+            --accent: #B7433D;
+            --deep: #641B24;
+            --border: #E3D7D0;
+        }
+
+        html[data-theme="light"] body {
+            background:
+                radial-gradient(circle at 10% 0%, rgba(183, 67, 61, 0.1), transparent 30rem),
+                radial-gradient(circle at 95% 30%, rgba(166, 156, 146, 0.14), transparent 28rem),
+                var(--bg);
+        }
+
+        html[data-theme="light"] .section-block {
+            background: linear-gradient(145deg, rgba(255, 252, 250, 0.9), rgba(240, 233, 228, 0.84));
+            box-shadow: 0 16px 34px rgba(100, 27, 36, 0.08);
+        }
+
+        html[data-theme="light"] .section-block:hover {
+            border-color: rgba(167, 62, 54, 0.58);
+            box-shadow: 0 20px 38px rgba(100, 27, 36, 0.12);
+        }
+
+        html[data-theme="light"] .flow-list li,
+        html[data-theme="light"] .badge-group {
+            background: rgba(240, 233, 228, 0.72);
+        }
+
+        html[data-theme="light"] figure img {
+            background: #F0E9E4;
+        }
+
+        html[data-theme="light"] .badge {
+            color: #641B24;
+            border-color: rgba(167, 62, 54, 0.42);
+        }
+
+        html[data-theme="light"] .badge:hover {
+            background: #EAD4D0;
+            color: #641B24;
+            border-color: #B7433D;
+        }
+
+        html[data-theme="light"] .theme-toggle {
+            border-color: var(--border);
+            background: rgba(255, 252, 250, 0.72);
+            color: var(--text);
+        }
+
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.35rem;
+            height: 2.35rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--soft);
+            color: var(--text);
+            cursor: pointer;
+            font: inherit;
+            font-size: 1.08rem;
+            line-height: 1;
+            transition: background-color .35s ease, color .35s ease, border-color .35s ease, transform .2s ease;
+        }
+
+        .theme-toggle:hover,
+        .theme-toggle:focus-visible {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .theme-toggle:focus-visible {
+            box-shadow: 0 0 0 3px rgba(183, 67, 61, 0.2);
+        }
+    </style>
+    <script>
+        (() => {
+            if (localStorage.getItem('portfolio-theme') === 'light') {
+                document.documentElement.dataset.theme = 'light';
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="index.html">Nihad.dev</a>
+            <a class="back-link" href="index.html#projects">← Back to projects</a>
+            <button class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="false"><span aria-hidden="true">☀</span></button>
+        </header>
+
+        <section class="hero" aria-labelledby="project-title">
+            <p class="eyebrow">Data Engineering · Machine Learning · Predictive Maintenance</p>
+            <h1 id="project-title">RealTime-Aero-Maintenance</h1>
+            <p class="lead">A hybrid Remaining Useful Life prediction system that combines real-time streaming, distributed storage, and adaptive machine learning for the NASA CMAPSS dataset.</p>
+            <div class="actions" aria-label="Project resources">
+                <a class="action-link primary" href="https://github.com/nihadElh/RealTime-Aero-Maintenance" target="_blank" rel="noopener noreferrer">GitHub repository <span aria-hidden="true">↗</span></a>
+                <a class="action-link" href="#dashboard">Open dashboard demo <span aria-hidden="true">↓</span></a>
+                <a class="action-link" href="https://github.com/nihadElh/RealTime-Aero-Maintenance/blob/main/README.md" target="_blank" rel="noopener noreferrer">Read project README <span aria-hidden="true">↗</span></a>
+            </div>
+        </section>
+
+        <main>
+            <div class="content-grid">
+                <article class="section-block full-width">
+                    <h2>Project Overview &amp; Goal</h2>
+                    <p>This project implements an end-to-end hybrid RUL (Remaining Useful Life) prediction system for aircraft engine fleets. Using the NASA CMAPSS dataset, it combines sensor data streaming, Big Data infrastructure, and machine learning to estimate how many operating cycles remain before maintenance is required.</p>
+                </article>
+
+                <article class="section-block full-width">
+                    <h2>Architecture &amp; Data Flow</h2>
+                    <ol class="flow-list">
+                        <li><strong>1. Ingestion:</strong> a simulated fleet publishes temperature, pressure, and vibration sensor events through Apache Kafka.</li>
+                        <li><strong>2. Speed Layer:</strong> a Python consumer applies temporal windowing and produces real-time RUL predictions.</li>
+                        <li><strong>3. Cold Storage:</strong> raw events and predictions are archived in Hadoop HDFS for auditability and future retraining.</li>
+                        <li><strong>4. Serving Layer:</strong> the latest results are persisted in MySQL for fast application queries.</li>
+                        <li><strong>5. Dashboard:</strong> PHP and Chart.js provide interactive fleet monitoring and maintenance alerts.</li>
+                    </ol>
+                    <figure class="architecture-figure">
+                        <img src="project/RealTime-Aero-Maintenance/assets/Architecture.png" alt="RealTime-Aero-Maintenance Lambda Architecture diagram" loading="lazy">
+                        <figcaption>Lambda Architecture and data flow.</figcaption>
+                    </figure>
+                </article>
+
+                <article class="section-block full-width">
+                    <h2>Hybrid Machine Learning Strategy</h2>
+                    <ul class="strategy-list">
+                        <li><strong>Cold Start mode:</strong> for engines with fewer than 30 cycles, Support Vector Regression (SVR) predicts RUL point by point with limited history.</li>
+                        <li><strong>Cruise mode:</strong> after 30 cycles, CatBoost Regressor uses sliding windows to model temporal dependencies and changing wear patterns.</li>
+                        <li><strong>RUL Clipping:</strong> predictions are capped at 130 cycles to reduce early-life noise and improve model convergence.</li>
+                    </ul>
+                </article>
+
+                <article class="section-block full-width">
+                    <h2>Performance &amp; Results</h2>
+                    <div class="metric">
+                        <span class="metric-value">10.25</span>
+                        <span class="metric-label">cycles MAE on FD001</span>
+                    </div>
+                    <p>The Mean Absolute Error measures an average prediction error of 10.25 cycles on the NASA FD001 dataset.</p>
+                </article>
+
+                <article class="section-block full-width">
+                    <h2>Tech Stack</h2>
+                    <div class="badge-groups">
+                        <div class="badge-group"><h3>Streaming</h3><div class="badges"><span class="badge">Apache Kafka</span></div></div>
+                        <div class="badge-group"><h3>Storage</h3><div class="badges"><span class="badge">Hadoop HDFS</span></div></div>
+                        <div class="badge-group"><h3>Database</h3><div class="badges"><span class="badge">MySQL</span></div></div>
+                        <div class="badge-group"><h3>Machine Learning</h3><div class="badges"><span class="badge">Python</span><span class="badge">Scikit-learn</span><span class="badge">CatBoost</span><span class="badge">Joblib</span></div></div>
+                        <div class="badge-group"><h3>Orchestration</h3><div class="badges"><span class="badge">Docker</span><span class="badge">Docker Compose</span><span class="badge">PowerShell</span></div></div>
+                        <div class="badge-group"><h3>Frontend</h3><div class="badges"><span class="badge">PHP</span><span class="badge">JavaScript</span><span class="badge">Chart.js</span><span class="badge">Tailwind CSS</span></div></div>
+                    </div>
+                </article>
+
+                <article id="dashboard" class="section-block full-width dashboard-figure">
+                    <h2>Dashboard Demo</h2>
+                    <figure>
+                        <img src="project/RealTime-Aero-Maintenance/assets/dashboard_demo.png" alt="Predictive maintenance dashboard showing RUL monitoring" loading="lazy">
+                        <figcaption>Real-time RUL monitoring dashboard.</figcaption>
+                    </figure>
+                </article>
+            </div>
+        </main>
+
+        <footer>RealTime-Aero-Maintenance · NASA CMAPSS predictive maintenance pipeline</footer>
+    </div>
+    <script>
+        const themeToggle = document.querySelector('.theme-toggle');
+        const themeIcon = themeToggle.querySelector('span');
+        function updateThemeToggle(theme) {
+            const isLight = theme === 'light';
+            themeIcon.textContent = isLight ? '☾' : '☀';
+            themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+            themeToggle.setAttribute('aria-pressed', String(isLight));
+        }
+        updateThemeToggle(document.documentElement.dataset.theme || 'dark');
+        themeToggle.addEventListener('click', () => {
+            const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+            document.documentElement.dataset.theme = nextTheme;
+            localStorage.setItem('portfolio-theme', nextTheme);
+            updateThemeToggle(nextTheme);
+        });
+
+        const animatedBlocks = document.querySelectorAll('.section-block');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            });
+        }, { threshold: 0.14 });
+
+        animatedBlocks.forEach((block, index) => {
+            block.style.transitionDelay = `${Math.min(index * 70, 420)}ms`;
+            revealObserver.observe(block);
+        });
+    </script>
+</body>
+</html>

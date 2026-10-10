@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Detailed view of the Decision Support System for the railway sector.">
+    <title>Decision Support System SNCF | Nihad El Hamry</title>
+    <style>
+        :root { --bg:#111; --panel:#1a1514; --soft:rgba(243,238,233,.055); --text:#f3eee9; --muted:#bdb3aa; --accent:#b7433d; --deep:#641b24; --border:rgba(243,238,233,.14); --max:1120px; }
+        * { box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body { margin:0; min-width:320px; background:radial-gradient(circle at 10% 0%,rgba(100,27,36,.24),transparent 30rem),radial-gradient(circle at 95% 30%,rgba(183,67,61,.12),transparent 28rem),var(--bg); color:var(--text); font-family:"Segoe UI",Tahoma,sans-serif; line-height:1.65; }
+        a { color:inherit; }
+        .page-shell { width:min(100% - 2rem,var(--max)); margin:0 auto; }
+        .topbar { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1.25rem 0; }
+        .brand { color:var(--text); font-weight:800; text-decoration:none; letter-spacing:.02em; }
+        .back-link { color:var(--muted); font-size:.92rem; text-decoration:none; }
+        .back-link:hover,.action-link:hover { color:var(--text); }
+        .hero { padding:clamp(3rem,8vw,6.5rem) 0 3rem; }
+        .eyebrow { margin:0 0 .8rem; color:var(--accent); font-size:.78rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+        h1,h2,h3 { line-height:1.15; }
+        h1 { margin:0; font-size:clamp(2rem,5.2vw,4.5rem); letter-spacing:-.04em; white-space:nowrap; }
+        .lead { max-width:850px; margin:1.5rem 0 0; color:var(--muted); font-size:clamp(1.05rem,2vw,1.3rem); }
+        .actions { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:2rem; }
+        .action-link { display:inline-flex; align-items:center; gap:.5rem; min-height:2.75rem; padding:.65rem 1rem; border:1px solid var(--border); border-radius:6px; background:var(--soft); color:var(--text); font-weight:700; text-decoration:none; }
+        .action-link.primary { border-color:transparent; background:linear-gradient(135deg,var(--deep),var(--accent)); }
+        main { padding-bottom:4rem; }
+        .content-grid { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(260px,.75fr); gap:1rem; align-items:start; }
+        .section-block { padding:clamp(1.25rem,3vw,2rem); border:1px solid var(--border); border-radius:10px; background:linear-gradient(145deg,rgba(26,21,20,.92),rgba(17,17,17,.86)); opacity:0; transform:translateY(24px); transition:opacity .7s ease,transform .7s ease,border-color .3s ease,box-shadow .3s ease; }
+        .section-block.is-visible { opacity:1; transform:translateY(0); }
+        .section-block:hover { border-color:rgba(183,67,61,.55); box-shadow:0 16px 35px rgba(0,0,0,.2); }
+        .full-width { grid-column:1/-1; }
+        h2 { margin:0 0 1rem; font-size:clamp(1.35rem,3vw,1.9rem); }
+        h2::after { display:block; width:3rem; height:3px; margin-top:.65rem; background:var(--accent); content:""; }
+        h3 { margin:1.4rem 0 .45rem; color:var(--text); font-size:1rem; }
+        p { margin:0; color:var(--muted); }
+        .flow-list { display:grid; gap:.85rem; margin:0; padding:0; list-style:none; }
+        .flow-list li { padding:.85rem 1rem; border-left:3px solid var(--accent); background:rgba(243,238,233,.035); }
+        .flow-list strong { color:var(--text); }
+        figure { margin:1.5rem 0 0; }
+        figure img { display:block; width:min(100%,820px); height:auto; margin:0 auto; border:1px solid var(--border); border-radius:6px; background:#0b0b0b; object-fit:contain; }
+        figcaption { margin-top:.55rem; color:var(--muted); font-size:.85rem; }
+        .badge-groups { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+        .badge-group { padding:1rem; border:1px solid var(--border); border-radius:7px; background:var(--soft); }
+        .badge-group h3 { margin-top:0; }
+        .badges { display:flex; flex-wrap:wrap; gap:.45rem; }
+        .badge { padding:.3rem .55rem; border:1px solid rgba(183,67,61,.4); border-radius:4px; color:#e8c9c4; font-size:.82rem; cursor:default; transition:transform .25s ease,background-color .25s ease,color .25s ease,border-color .25s ease,box-shadow .25s ease; }
+        .badge:hover { background:#e8c9c4; color:var(--deep); border-color:#f0aaa2; transform:translateY(-2px) scale(1.04); box-shadow:0 4px 10px rgba(183,67,61,.24); }
+        #reporting { scroll-margin-top:1.5rem; }
+        footer { padding:1.5rem 0 2.5rem; border-top:1px solid var(--border); color:var(--muted); font-size:.86rem; }
+        @media (max-width:780px) { .content-grid { grid-template-columns:1fr; } .badge-groups { grid-template-columns:repeat(2,minmax(0,1fr)); } h1 { white-space:normal; } }
+        @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .section-block { opacity:1; transform:none; transition:none; } }
+        @media (max-width:480px) { .page-shell { width:min(100% - 1.25rem,var(--max)); } .topbar { align-items:flex-start; flex-direction:column; } .badge-groups { grid-template-columns:1fr; } .hero { padding-top:2.5rem; } }
+
+        html[data-theme="light"] {
+            color-scheme: light;
+            --bg: #F8F5F2;
+            --panel: #F0E9E4;
+            --soft: rgba(255, 252, 250, 0.76);
+            --text: #2B2422;
+            --muted: #716660;
+            --accent: #B7433D;
+            --deep: #641B24;
+            --border: #E3D7D0;
+        }
+
+        html[data-theme="light"] body {
+            background:
+                radial-gradient(circle at 10% 0%, rgba(183, 67, 61, 0.1), transparent 30rem),
+                radial-gradient(circle at 95% 30%, rgba(166, 156, 146, 0.14), transparent 28rem),
+                var(--bg);
+        }
+
+        html[data-theme="light"] .section-block {
+            background: linear-gradient(145deg, rgba(255, 252, 250, 0.9), rgba(240, 233, 228, 0.84));
+            box-shadow: 0 16px 34px rgba(100, 27, 36, 0.08);
+        }
+
+        html[data-theme="light"] .section-block:hover {
+            border-color: rgba(167, 62, 54, 0.58);
+            box-shadow: 0 20px 38px rgba(100, 27, 36, 0.12);
+        }
+
+        html[data-theme="light"] .flow-list li,
+        html[data-theme="light"] .badge-group {
+            background: rgba(240, 233, 228, 0.72);
+        }
+
+        html[data-theme="light"] figure img {
+            background: #F0E9E4;
+        }
+
+        html[data-theme="light"] .badge {
+            color: #641B24;
+            border-color: rgba(167, 62, 54, 0.42);
+        }
+
+        html[data-theme="light"] .badge:hover {
+            background: #EAD4D0;
+            color: #641B24;
+            border-color: #B7433D;
+        }
+
+        html[data-theme="light"] .theme-toggle {
+            border-color: var(--border);
+            background: rgba(255, 252, 250, 0.72);
+            color: var(--text);
+        }
+
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.35rem;
+            height: 2.35rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--soft);
+            color: var(--text);
+            cursor: pointer;
+            font: inherit;
+            font-size: 1.08rem;
+            line-height: 1;
+            transition: background-color .35s ease, color .35s ease, border-color .35s ease, transform .2s ease;
+        }
+
+        .theme-toggle:hover,
+        .theme-toggle:focus-visible {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        .theme-toggle:focus-visible {
+            box-shadow: 0 0 0 3px rgba(183, 67, 61, 0.2);
+        }
+    </style>
+    <script>
+        (() => {
+            if (localStorage.getItem('portfolio-theme') === 'light') {
+                document.documentElement.dataset.theme = 'light';
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="index.html">Nihad.dev</a>
+            <a class="back-link" href="index.html#projects">← Back to projects</a>
+            <button class="theme-toggle" type="button" aria-label="Switch to light mode" aria-pressed="false"><span aria-hidden="true">☀</span></button>
+        </header>
+
+        <section class="hero" aria-labelledby="project-title">
+            <p class="eyebrow">Data Engineering · Business Intelligence · Railway Sector</p>
+            <h1 id="project-title">Decision Support System — SNCF</h1>
+            <p class="lead">An end-to-end railway business intelligence architecture that transforms raw transactional data into a reliable Data Warehouse, multidimensional analysis environment, and interactive KPI reporting system.</p>
+            <div class="actions" aria-label="Project resources">
+                <a class="action-link primary" href="https://github.com/nihadElh/Decision-Support-System-SNCF" target="_blank" rel="noopener noreferrer">GitHub repository <span aria-hidden="true">↗</span></a>
+                <a class="action-link" href="#reporting">View BI dashboard <span aria-hidden="true">↓</span></a>
+                <a class="action-link" href="https://github.com/nihadElh/Decision-Support-System-SNCF/blob/main/README.md" target="_blank" rel="noopener noreferrer">Project documentation <span aria-hidden="true">↗</span></a>
+            </div>
+        </section>
+
+        <main>
+            <div class="content-grid">
+                <article class="section-block full-width">
+                    <h2>Project Overview &amp; Goal</h2>
+                    <p>This project designs an end-to-end decision-making architecture for the railway sector. Raw transactional data is transformed into a structured Data Warehouse to address data quality issues, isolated source systems, and analytical performance constraints while giving decision-makers a consistent view of business activity.</p>
+                </article>
+
+                <article class="section-block full-width">
+                    <h2>Operational Architecture &amp; ETL (Talend &amp; MySQL)</h2>
+                    <p>The Operational Database Architecture (DBO) receives source file injections into MySQL. Talend Open Studio orchestrates the ETL flow, applies strict normalization rules, cleans the source data, and prepares reliable fact-table records for analytical modeling.</p>
+                    <figure>
+                        <img src="project/Decision%20Support%20System%20SNCF/assets/Table%20de%20fait.png" alt="Talend ETL workflow and railway fact table processing" loading="lazy">
+                        <figcaption>Talend ETL workflow and fact table processing.</figcaption>
+                    </figure>
+                </article>
+
+                <article class="section-block full-width">
+                    <h2>Multidimensional Modeling (Data Warehouse)</h2>
+                    <p>The Data Warehouse is structured as a Star Schema centered on the sales fact table and connected to dedicated dimension tables. This model keeps joins simple, makes business measures consistent, and improves query performance for recurring analytical workloads.</p>
+                    <figure>
+                        <img src="project/Decision%20Support%20System%20SNCF/assets/data%20model.png" alt="Railway business intelligence star schema data model" loading="lazy">
+                        <figcaption>Star schema and Data Warehouse model.</figcaption>
+                    </figure>
+                </article>
+
+                <article class="section-block full-width">
+                    <h2>OLAP Analysis &amp; Microsoft Ecosystem</h2>
+                    <p>The analytical environment is migrated into the Microsoft ecosystem with SQL Server as the relational platform. An SSAS cube pre-aggregates business calculations, while MDX queries handle complex temporal and geographical dimensions for flexible drill-down and comparison.</p>
+                </article>
+
+                <article id="reporting" class="section-block full-width">
+                    <h2>Reporting &amp; Data Visualization (Power BI)</h2>
+                    <p>The decision-making restitution environment turns validated metrics into visual, interactive Key Performance Indicators. Power BI dashboards support precise activity tracking and help stakeholders explore the performance of the railway business from multiple perspectives.</p>
+                    <figure>
+                        <img src="project/Decision%20Support%20System%20SNCF/assets/bi%20analyses.png" alt="Power BI railway analytics dashboard overview" loading="lazy">
+                        <figcaption>Power BI analytical dashboard overview.</figcaption>
+                    </figure>
+                </article>
+
+                <article class="section-block full-width">
+                    <h2>Tech Stack</h2>
+                    <div class="badge-groups">
+                        <div class="badge-group"><h3>ETL</h3><div class="badges"><span class="badge">Talend Open Studio</span></div></div>
+                        <div class="badge-group"><h3>Operational Database</h3><div class="badges"><span class="badge">MySQL</span></div></div>
+                        <div class="badge-group"><h3>Data Warehouse</h3><div class="badges"><span class="badge">SQL Server</span></div></div>
+                        <div class="badge-group"><h3>OLAP</h3><div class="badges"><span class="badge">SSAS</span><span class="badge">MDX</span></div></div>
+                        <div class="badge-group"><h3>Reporting</h3><div class="badges"><span class="badge">Power BI</span></div></div>
+                    </div>
+                </article>
+            </div>
+        </main>
+
+        <footer>Decision Support System SNCF · Railway business intelligence architecture</footer>
+    </div>
+
+    <script>
+        const themeToggle = document.querySelector('.theme-toggle');
+        const themeIcon = themeToggle.querySelector('span');
+        function updateThemeToggle(theme) {
+            const isLight = theme === 'light';
+            themeIcon.textContent = isLight ? '☾' : '☀';
+            themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+            themeToggle.setAttribute('aria-pressed', String(isLight));
+        }
+        updateThemeToggle(document.documentElement.dataset.theme || 'dark');
+        themeToggle.addEventListener('click', () => {
+            const nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+            document.documentElement.dataset.theme = nextTheme;
+            localStorage.setItem('portfolio-theme', nextTheme);
+            updateThemeToggle(nextTheme);
+        });
+
+        const animatedBlocks = document.querySelectorAll('.section-block');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            });
+        }, { threshold: 0.14 });
+
+        animatedBlocks.forEach((block, index) => {
+            block.style.transitionDelay = `${Math.min(index * 70, 420)}ms`;
+            revealObserver.observe(block);
+        });
+    </script>
+</body>
+</html>
